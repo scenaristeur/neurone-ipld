@@ -99,7 +99,7 @@ async function main () {
 // let keyJohn = await createKey("John")
   const addrJ = '/ipfs/'+cborJohnCid
 
-  await ipfs.name.publish(addrJ, {
+  let res = await ipfs.name.publish(addrJ, {
       resolve: false,
       key: "John",
     }).then(function (res) {
@@ -108,7 +108,16 @@ async function main () {
     //   - value: the "real" address to which Name points.
     console.log(res)
     console.log(`John https://gateway.ipfs.io/ipns/${res.name}`)
+
+    return res
   })
+console.log("res",res)
+  let pathCidJohn = await ipfs.name.resolve("John")
+
+  console.log("pathCidJohn", pathCidJohn)
+
+  let johnContent = await ipfs.cat(pathCidJohn)
+  console.log("johnContent", johnContent)
 
 
 
