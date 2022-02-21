@@ -9,8 +9,10 @@ import { create } from 'ipfs-http-client'
 import { fromString } from 'uint8arrays/from-string'
 import { toString } from 'uint8arrays/to-string'
 
-async function main () {
   const ipfs = create()
+
+async function main () {
+
   //const ipfs = await createNode()
 
   console.log('\nStart of the example:')
@@ -73,6 +75,43 @@ async function main () {
   console.log("first knows of john likes", test.value)
 
 
+  let r = await ipfs.key.list();
+  console.log(r)
+        // keys = r.find((k) => k.name == keyName);
+        // log(JSON.stringify(keys));
+
+
+// let keyDav = await createKey("David")
+// console.log("keyDav", keyDav)
+  const addrD = '/ipfs/'+cborDavCid
+
+  await ipfs.name.publish(addrD, {
+      resolve: false,
+      key: "David",
+    }).then(function (res) {
+    // You now receive a res which contains two fields:
+    //   - name: the name under which the content was published.
+    //   - value: the "real" address to which Name points.
+    console.log(res)
+    console.log(`David https://gateway.ipfs.io/ipns/${res.name}`)
+  })
+
+// let keyJohn = await createKey("John")
+  const addrJ = '/ipfs/'+cborJohnCid
+
+  await ipfs.name.publish(addrJ, {
+      resolve: false,
+      key: "John",
+    }).then(function (res) {
+    // You now receive a res which contains two fields:
+    //   - name: the name under which the content was published.
+    //   - value: the "real" address to which Name points.
+    console.log(res)
+    console.log(`John https://gateway.ipfs.io/ipns/${res.name}`)
+  })
+
+
+
   // console.log(ipfs.dag)
   // let tree = await ipfs.dag.tree(cborJohnCid)
   // console.log("tree", tree)
@@ -87,6 +126,23 @@ async function main () {
 
 
 
+}
+
+async function createKey(keyName) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // generate a key on the browser IPNS keychain with the specified name
+      await ipfs.key.gen(keyName, {
+        type: 'ed25519'
+      })
+
+      // now this key can be used to publish to this ipns publicKey
+      resolve(true);
+    } catch (err) {
+      console.log(`Error creating Key ${keyName}: \n ${err}`);
+      reject(false);
+    }
+  });
 }
 
 main()
