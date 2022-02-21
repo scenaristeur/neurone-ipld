@@ -42,51 +42,6 @@ async function main () {
   })
 
   console.log(toString(Uint8Array.from(result.value)))
-
-
-  const David = {
-    name: 'David',
-    likes: ['js-ipfs', 'icecream', 'steak'],
-    hobbies: [pbNodeCid]
-  }
-  const cborDavCid = await ipfs.dag.put(David, {
-    storeCodec: 'dag-cbor',
-    hashAlg: 'sha2-512'
-  })
-
-
-  const John = {
-    name: 'John',
-    likes: ['js-ipfs', 'icecream', 'steak'],
-    knows: [cborDavCid]
-  }
-  const cborJohnCid = await ipfs.dag.put(John, {
-    storeCodec: 'dag-cbor',
-    hashAlg: 'sha2-512'
-  })
-
-  console.log(cborJohnCid)
-  const test = await ipfs.dag.get(cborJohnCid, {
-    path: 'knows/0/likes/1'
-  })
-  console.log(test)
-  console.log("first knows of john likes", test.value)
-
-
-  // console.log(ipfs.dag)
-  // let tree = await ipfs.dag.tree(cborJohnCid)
-  // console.log("tree", tree)
-  // ipfs.dag.tree(cborJohnCid, { recursive: true }, (err, paths) => {
-  //     if (err) {
-  //       throw err
-  //     }
-  //
-  //     console.log(paths)
-  //   })
-
-
-
-
 }
 
 main()
