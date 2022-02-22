@@ -112,7 +112,9 @@ async function main () {
     return res
   })
 console.log("res",res)
-  let pathCidJohn = await ipfs.name.resolve("John")
+  let pathCidJohn = await ipfs.name.resolve("John", {
+        stream: false,
+      })
 
   console.log("pathCidJohn", pathCidJohn)
 
